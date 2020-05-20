@@ -1,4 +1,4 @@
-import 'package:any_quote/widget/quote_widget.dart';
+import 'package:any_quote/widget/home_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,6 +9,6 @@ void main() {
       primaryColor: Colors.blue,
       accentColor: Colors.blueAccent,
     ),
-    home: QuoteWidget(),
+    home: HomeWidget(),
   ));
 }

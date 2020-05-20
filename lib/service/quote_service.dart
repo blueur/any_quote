@@ -2,12 +2,22 @@ import 'dart:convert';
 
 import 'package:any_quote/model/quote.dart';
 import 'package:any_quote/model/wikiquote.dart';
+import 'package:any_quote/widget/random_widget.dart';
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<List<Quote>> updateQuotes(SharedPreferences prefs) async {
+  final List<Quote> quotes = await getQuotes('Kaamelott').toList();
+  return prefs
+      .setStringList(QUOTES,
+          quotes.map((quote) => quote.toString()).toList(growable: false))
+      .then((success) => quotes);
+}
 
 Stream<Quote> parseQuotes(Section section, Parse parse) {
   final Document document = parser.parse(parse.text.all);
