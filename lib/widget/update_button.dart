@@ -25,11 +25,7 @@ class _UpdateButtonState<T> extends State<UpdateButton<T>> {
         if (_isUpdating) {
           return AspectRatio(
             aspectRatio: 1.0,
-            child: RefreshProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).backgroundColor),
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
+            child: const RefreshProgressIndicator(),
           );
         } else {
           return IconButton(

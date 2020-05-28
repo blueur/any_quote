@@ -13,14 +13,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 Future<List<Quote>> updateQuotes(SharedPreferences prefs) async {
-  final List<Quote> quotes = await _getQuotes('Kaamelott').toList();
+  final List<Quote> quotes =
+      await _getQuotes(Locale.fromSubtags(languageCode: 'fr'), 'Kaamelott')
+          .toList();
   return prefs
       .setStringList(PreferenceKey.QUOTES,
-          quotes.map((quote) => quote.toString()).toList(growable: false))
+          quotes.map((quote) => quote.toString()).toList())
       .then((success) => quotes);
 }
 
-Stream<Quote> parseQuotes(Section section, Parse parse) {
+Stream<Quote> parseQuotes(Locale locale, Section section, Parse parse) {
   final Document document = parser.parse(parse.text.all);
   document.getElementsByClassName('mw-editsection').forEach((element) {
     element.remove();
@@ -39,46 +41,48 @@ Stream<Quote> parseQuotes(Section section, Parse parse) {
   final Stream<Quote> externalQuotes =
       Stream.fromIterable(document.querySelectorAll('dl>dd>a'))
           .map((element) => element.attributes['title'])
-          .asyncExpand((e) => _getQuotes(e));
+          .asyncExpand((e) => _getQuotes(locale, e));
   return StreamGroup.merge([internalQuotes, externalQuotes]);
 }
 
-Stream<Quote> _getQuotes(String page) {
-  return _getSections(page)
+Stream<Quote> _getQuotes(Locale locale, String page) {
+  return _getSections(locale, page)
       .toList()
       .then((sections) => sections.where((section) => sections
           .where((s) => s.number != section.number)
           .every((s) => !s.number.startsWith('${section.number}.'))))
       .asStream()
       .expand((sections) => sections)
-      .asyncExpand((section) => _getQuotesBySection(page, section));
+      .asyncExpand((section) => _getQuotesBySection(locale, page, section));
 }
 
-Stream<Section> _getSections(String page) {
-  return Stream.fromFuture(_getResponse({
+Stream<Section> _getSections(Locale locale, String page) {
+  return Stream.fromFuture(_getResponse(locale, {
     'prop': 'sections',
     'page': page,
   })).expand((response) => response.parse.sections);
 }
 
-Stream<Quote> _getQuotesBySection(String page, Section section) {
-  return Stream.fromFuture(_getResponse({
+Stream<Quote> _getQuotesBySection(Locale locale, String page, Section section) {
+  return Stream.fromFuture(_getResponse(locale, {
     'prop': 'text',
     'page': page,
     'section': section.index,
   }))
       .map((response) => response.parse)
-      .asyncExpand((parse) => parseQuotes(section, parse));
+      .asyncExpand((parse) => parseQuotes(locale, section, parse));
 }
 
-Future<WikiquoteResponse> _getResponse(Map<String, String> parameters) async {
+Future<WikiquoteResponse> _getResponse(
+    Locale locale, Map<String, String> parameters) async {
   final Map<String, String> queryParameters = {
     'action': 'parse',
     'format': 'json',
     'noimages': ''
   };
   queryParameters.addAll(parameters);
-  final Uri uri = Uri.https('fr.wikiquote.org', '/w/api.php', queryParameters);
+  final Uri uri = Uri.https(
+      '${locale.languageCode}.wikiquote.org', '/w/api.php', queryParameters);
   debugPrint(uri.toString());
   final http.Response response = await http.get(uri);
 

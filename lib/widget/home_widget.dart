@@ -1,5 +1,6 @@
 import 'package:any_quote/widget/library_widget.dart';
 import 'package:any_quote/widget/random_widget.dart';
+import 'package:any_quote/widget/settings_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class _HomeState extends State<HomeWidget> {
   static final List<Widget> _widgets = <Widget>[
     RandomWidget(),
     LibraryWidget(),
+    SettingsWidget(),
   ];
 
   void _onTap(int index) {
@@ -38,6 +40,10 @@ class _HomeState extends State<HomeWidget> {
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             title: Text('library'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            title: Text('settings'),
           ),
         ],
         currentIndex: _selectedIndex,

@@ -35,7 +35,7 @@ class _LibraryState extends State<LibraryWidget> {
       return prefs
           .getStringList(PreferenceKey.QUOTES)
           .map((string) => Quote.fromString(string))
-          .toList(growable: false);
+          .toList();
     });
   }
 
@@ -72,7 +72,7 @@ class _LibraryState extends State<LibraryWidget> {
                 children: snapshot.data
                     .where(_predicate)
                     .map((quote) => QuoteWidget(quote))
-                    .toList(growable: false),
+                    .toList(),
                 physics: const BouncingScrollPhysics(),
               ),
             );

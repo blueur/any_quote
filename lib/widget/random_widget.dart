@@ -79,7 +79,7 @@ class _RandomWidgetState extends State<RandomWidget> {
         ),
         IconButton(
           color: Theme.of(context).primaryColor,
-          icon: Icon(Icons.refresh),
+          icon: const Icon(Icons.refresh),
           onPressed: _refreshQuote,
         )
       ],
