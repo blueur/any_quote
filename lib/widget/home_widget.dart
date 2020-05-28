@@ -36,7 +36,9 @@ class _HomeState extends State<HomeWidget> {
             title: Text('quote'),
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.list), title: Text('library'))
+            icon: Icon(Icons.list),
+            title: Text('library'),
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,

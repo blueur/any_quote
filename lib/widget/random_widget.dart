@@ -6,8 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String QUOTES = 'quotes';
-const String QUOTE = 'quote';
+import '../main.dart';
 
 class RandomWidget extends StatefulWidget {
   RandomWidget({Key key}) : super(key: key);
@@ -24,14 +23,15 @@ class _RandomWidgetState extends State<RandomWidget> {
     final SharedPreferences prefs = await _prefs;
     final Quote quote = await getQuote();
     setState(() {
-      _quote =
-          prefs.setString(QUOTE, quote.toString()).then((success) => quote);
+      _quote = prefs
+          .setString(PreferenceKey.QUOTE, quote.toString())
+          .then((success) => quote);
     });
   }
 
   Future<Quote> getQuote() async {
     final SharedPreferences prefs = await _prefs;
-    final List<String> quoteStrings = prefs.getStringList(QUOTES);
+    final List<String> quoteStrings = prefs.getStringList(PreferenceKey.QUOTES);
     if (quoteStrings != null) {
       return Quote.fromString(randomInstance(quoteStrings));
     } else {
@@ -44,7 +44,7 @@ class _RandomWidgetState extends State<RandomWidget> {
   void initState() {
     super.initState();
     _quote = _prefs.then((prefs) {
-      return Quote.fromString(prefs.getString(QUOTE));
+      return Quote.fromString(prefs.getString(PreferenceKey.QUOTE));
     });
   }
 

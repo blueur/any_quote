@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:any_quote/model/quote.dart';
 import 'package:any_quote/model/wikiquote.dart';
-import 'package:any_quote/widget/random_widget.dart';
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -11,10 +10,12 @@ import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
+
 Future<List<Quote>> updateQuotes(SharedPreferences prefs) async {
-  final List<Quote> quotes = await getQuotes('Kaamelott').toList();
+  final List<Quote> quotes = await _getQuotes('Kaamelott').toList();
   return prefs
-      .setStringList(QUOTES,
+      .setStringList(PreferenceKey.QUOTES,
           quotes.map((quote) => quote.toString()).toList(growable: false))
       .then((success) => quotes);
 }
@@ -38,11 +39,11 @@ Stream<Quote> parseQuotes(Section section, Parse parse) {
   final Stream<Quote> externalQuotes =
       Stream.fromIterable(document.querySelectorAll('dl>dd>a'))
           .map((element) => element.attributes['title'])
-          .asyncExpand((e) => getQuotes(e));
+          .asyncExpand((e) => _getQuotes(e));
   return StreamGroup.merge([internalQuotes, externalQuotes]);
 }
 
-Stream<Quote> getQuotes(String page) {
+Stream<Quote> _getQuotes(String page) {
   return _getSections(page)
       .toList()
       .then((sections) => sections.where((section) => sections

@@ -12,3 +12,8 @@ void main() {
     home: HomeWidget(),
   ));
 }
+
+class PreferenceKey {
+  static const String QUOTES = 'quotes';
+  static const String QUOTE = 'quote';
+}
