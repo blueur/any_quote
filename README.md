@@ -1,16 +1,22 @@
 # any_quote
 
-A new Flutter project.
+Application for getting quotes from [Wikiquote](https://www.wikiquote.org/). 
 
-## Getting Started
+## Build
 
-This project is a starting point for a Flutter application.
+### build_runner
 
-A few resources to get you started if this is your first Flutter project:
+[build_runner](https://pub.dev/packages/build_runner)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```shell
+# one time
+pub run build_runner build
+# or continuously
+pub run build_runner watch
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Flutter
+
+```shell
+flutter run --release
+```

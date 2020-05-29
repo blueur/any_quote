@@ -22,10 +22,11 @@ class WikiquoteResponse {
 @JsonSerializable()
 class Parse {
   final String title;
-  final List<Section> sections;
   final Text text;
+  final List<Link> links;
+  final List<Section> sections;
 
-  Parse(this.title, this.sections, this.text);
+  Parse(this.title, this.text, this.links, this.sections);
 
   factory Parse.fromJson(Map<String, dynamic> json) => _$ParseFromJson(json);
 
@@ -67,6 +68,25 @@ class Text {
   factory Text.fromJson(Map<String, dynamic> json) => _$TextFromJson(json);
 
   Map<String, dynamic> toJson() => _$TextToJson(this);
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
+@JsonSerializable()
+class Link {
+  final int ns;
+  final String exists;
+  @JsonKey(name: '*')
+  final String all;
+
+  Link(this.ns, this.exists, this.all);
+
+  factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LinkToJson(this);
 
   @override
   String toString() {

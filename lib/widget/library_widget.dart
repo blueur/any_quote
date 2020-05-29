@@ -67,11 +67,22 @@ class _LibraryState extends State<LibraryWidget> {
         future: _quotes,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            final List<Quote> quotes = snapshot.data.where(_predicate).toList();
             return Scrollbar(
               child: ListView(
-                children: snapshot.data
-                    .where(_predicate)
-                    .map((quote) => QuoteWidget(quote))
+                children: quotes
+                    .asMap()
+                    .entries
+                    .map((entry) => Stack(
+                          alignment: Alignment.topRight,
+                          children: <Widget>[
+                            QuoteWidget(entry.value),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('${entry.key + 1}/${quotes.length}'),
+                            )
+                          ],
+                        ))
                     .toList(),
                 physics: const BouncingScrollPhysics(),
               ),

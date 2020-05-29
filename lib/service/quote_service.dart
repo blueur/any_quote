@@ -38,10 +38,12 @@ Stream<Quote> parseQuotes(Locale locale, Section section, Parse parse) {
     debugPrint(quote.toString());
     return quote;
   });
-  final Stream<Quote> externalQuotes =
-      Stream.fromIterable(document.querySelectorAll('dl>dd>a'))
-          .map((element) => element.attributes['title'])
-          .asyncExpand((e) => _getQuotes(locale, e));
+
+  final Stream<Quote> externalQuotes = Stream.fromIterable(parse.links)
+      .where((link) => link.exists != null)
+      .where((link) => link.ns == 0)
+      .map((link) => link.all)
+      .asyncExpand((page) => _getQuotes(locale, page));
   return StreamGroup.merge([internalQuotes, externalQuotes]);
 }
 
@@ -65,7 +67,7 @@ Stream<Section> _getSections(Locale locale, String page) {
 
 Stream<Quote> _getQuotesBySection(Locale locale, String page, Section section) {
   return Stream.fromFuture(_getResponse(locale, {
-    'prop': 'text',
+    'prop': 'text|links',
     'page': page,
     'section': section.index,
   }))
@@ -83,7 +85,7 @@ Future<WikiquoteResponse> _getResponse(
   queryParameters.addAll(parameters);
   final Uri uri = Uri.https(
       '${locale.languageCode}.wikiquote.org', '/w/api.php', queryParameters);
-  debugPrint(uri.toString());
+  debugPrint('http GET ${uri.toString()}');
   final http.Response response = await http.get(uri);
 
   if (response.statusCode == 200) {

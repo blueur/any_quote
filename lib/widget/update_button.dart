@@ -18,6 +18,12 @@ class _UpdateButtonState<T> extends State<UpdateButton<T>> {
 
   _UpdateButtonState(this.update, this.onFinish);
 
+  void _onUpdated() {
+    setState(() {
+      _isUpdating = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Builder(
@@ -35,10 +41,10 @@ class _UpdateButtonState<T> extends State<UpdateButton<T>> {
                 _isUpdating = true;
               });
               update().then((t) {
-                setState(() {
-                  _isUpdating = false;
-                });
+                _onUpdated();
                 onFinish?.call(context, t);
+              }).catchError((error) {
+                _onUpdated();
               });
             },
           );
