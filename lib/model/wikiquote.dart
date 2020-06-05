@@ -6,7 +6,7 @@ part 'wikiquote.g.dart';
 class WikiquoteResponse {
   final Parse parse;
 
-  WikiquoteResponse(this.parse);
+  WikiquoteResponse({this.parse});
 
   factory WikiquoteResponse.fromJson(Map<String, dynamic> json) =>
       _$WikiquoteResponseFromJson(json);
@@ -22,11 +22,11 @@ class WikiquoteResponse {
 @JsonSerializable()
 class Parse {
   final String title;
-  final Text text;
+  final String text;
   final List<Link> links;
   final List<Section> sections;
 
-  Parse(this.title, this.text, this.links, this.sections);
+  Parse({this.title, this.text, this.links, this.sections});
 
   factory Parse.fromJson(Map<String, dynamic> json) => _$ParseFromJson(json);
 
@@ -45,7 +45,7 @@ class Section {
   final String number;
   final String index;
 
-  Section(this.toclevel, this.level, this.number, this.index);
+  Section({this.toclevel, this.level, this.number, this.index});
 
   factory Section.fromJson(Map<String, dynamic> json) =>
       _$SectionFromJson(json);
@@ -59,30 +59,12 @@ class Section {
 }
 
 @JsonSerializable()
-class Text {
-  @JsonKey(name: '*')
-  final String all;
-
-  Text(this.all);
-
-  factory Text.fromJson(Map<String, dynamic> json) => _$TextFromJson(json);
-
-  Map<String, dynamic> toJson() => _$TextToJson(this);
-
-  @override
-  String toString() {
-    return toJson().toString();
-  }
-}
-
-@JsonSerializable()
 class Link {
   final int ns;
-  final String exists;
-  @JsonKey(name: '*')
-  final String all;
+  final String title;
+  final bool exists;
 
-  Link(this.ns, this.exists, this.all);
+  Link({this.ns, this.title, this.exists});
 
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
 
