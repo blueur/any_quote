@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'quote.g.dart';
@@ -8,9 +9,17 @@ part 'quote.g.dart';
 class Quote {
   final String location;
   final String text;
-  final String source;
+  final String reference;
+  final String precision;
+  final String original;
 
-  Quote(this.location, this.text, this.source);
+  Quote({
+    @required this.location,
+    @required this.text,
+    @required this.reference,
+    this.precision,
+    this.original,
+  });
 
   factory Quote.fromJson(Map<String, dynamic> json) => _$QuoteFromJson(json);
 

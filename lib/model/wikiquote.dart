@@ -5,8 +5,9 @@ part 'wikiquote.g.dart';
 @JsonSerializable()
 class WikiquoteResponse {
   final Parse parse;
+  final Query query;
 
-  WikiquoteResponse({this.parse});
+  WikiquoteResponse({this.parse, this.query});
 
   factory WikiquoteResponse.fromJson(Map<String, dynamic> json) =>
       _$WikiquoteResponseFromJson(json);
@@ -69,6 +70,40 @@ class Link {
   factory Link.fromJson(Map<String, dynamic> json) => _$LinkFromJson(json);
 
   Map<String, dynamic> toJson() => _$LinkToJson(this);
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
+@JsonSerializable()
+class Query {
+  final List<SearchResult> prefixsearch;
+  final List<SearchResult> search;
+
+  Query({this.prefixsearch, this.search});
+
+  factory Query.fromJson(Map<String, dynamic> json) => _$QueryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QueryToJson(this);
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
+@JsonSerializable()
+class SearchResult {
+  final String title;
+
+  SearchResult({this.title});
+
+  factory SearchResult.fromJson(Map<String, dynamic> json) =>
+      _$SearchResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SearchResultToJson(this);
 
   @override
   String toString() {

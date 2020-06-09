@@ -19,17 +19,22 @@ class _RandomWidgetState extends State<RandomWidget> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Future<Quote> _quote;
 
-  Future<void> _refreshQuote() async {
+  Future<Quote> _setQuote(Quote quote) async {
     final SharedPreferences prefs = await _prefs;
-    final Quote quote = await getQuote();
     setState(() {
       _quote = prefs
           .setString(PreferenceKey.QUOTE, quote.toString())
           .then((success) => quote);
     });
+    return quote;
   }
 
-  Future<Quote> getQuote() async {
+  Future<Quote> _refreshQuote() async {
+    final Quote quote = await _getRandomQuote();
+    return _setQuote(quote);
+  }
+
+  Future<Quote> _getRandomQuote() async {
     final SharedPreferences prefs = await _prefs;
     final List<String> quoteStrings = prefs.getStringList(PreferenceKey.QUOTES);
     if (quoteStrings != null) {
@@ -44,7 +49,13 @@ class _RandomWidgetState extends State<RandomWidget> {
   void initState() {
     super.initState();
     _quote = _prefs.then((prefs) {
-      return Quote.fromString(prefs.getString(PreferenceKey.QUOTE));
+      final Quote quote =
+          Quote.fromString(prefs.getString(PreferenceKey.QUOTE));
+      if (quote != null) {
+        return quote;
+      } else {
+        return _refreshQuote();
+      }
     });
   }
 
@@ -53,28 +64,37 @@ class _RandomWidgetState extends State<RandomWidget> {
     return Column(
       children: <Widget>[
         Expanded(
-          child: RefreshIndicator(
-            child: Scrollbar(
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: FutureBuilder<Quote>(
-                  future: _quote,
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return const Center(child: CircularProgressIndicator());
-                      default:
-                        if (snapshot.hasError) {
-                          return Text("${snapshot.error}");
-                        } else {
-                          return QuoteWidget(snapshot.data);
+          child: Container(
+            child: Center(
+              child: RefreshIndicator(
+                onRefresh: _refreshQuote,
+                child: Scrollbar(
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: FutureBuilder<Quote>(
+                      future: _quote,
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          default:
+                            if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            } else {
+                              if (snapshot.data != null) {
+                                return QuoteWidget(snapshot.data);
+                              } else {
+                                return const NoQuoteWidget();
+                              }
+                            }
                         }
-                    }
-                  },
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
-            onRefresh: _refreshQuote,
           ),
         ),
         IconButton(

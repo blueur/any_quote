@@ -6,8 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../main.dart';
-
 class LibraryWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _LibraryState();
@@ -15,6 +13,7 @@ class LibraryWidget extends StatefulWidget {
 
 class _LibraryState extends State<LibraryWidget> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final TextEditingController _text_controller = TextEditingController();
   Future<List<Quote>> _quotes;
   bool Function(Quote quote) _predicate = (quote) => true;
 
@@ -24,19 +23,21 @@ class _LibraryState extends State<LibraryWidget> {
       _predicate = (quote) =>
           quote.text.toLowerCase().contains(searchText) ||
           quote.location.toLowerCase().contains(searchText) ||
-          quote.source.toLowerCase().contains(searchText);
+          quote.reference.toLowerCase().contains(searchText);
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _quotes = _prefs.then((prefs) {
-      return prefs
-          .getStringList(PreferenceKey.QUOTES)
-          .map((string) => Quote.fromString(string))
-          .toList();
-    });
+    _quotes = _prefs.then(readQuotes);
+    _text_controller.addListener(() => _onSearch(_text_controller.text));
+  }
+
+  @override
+  void dispose() {
+    _text_controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,16 +45,26 @@ class _LibraryState extends State<LibraryWidget> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          decoration: const InputDecoration(
+          controller: _text_controller,
+          decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
             hintText: 'search',
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: () {
+                FocusScope.of(context).unfocus();
+                _text_controller.clear();
+              },
+            ),
           ),
-          onChanged: _onSearch,
         ),
         actions: <Widget>[
           UpdateButton<List<Quote>>(
             update: () async => await updateQuotes(await _prefs),
             onFinish: (context, quotes) {
+              setState(() {
+                _quotes = _prefs.then(readQuotes);
+              });
               return Scaffold.of(context).showSnackBar(
                 SnackBar(
                   content: Text('updated ${quotes.length} quotes !'),
@@ -68,29 +79,36 @@ class _LibraryState extends State<LibraryWidget> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final List<Quote> quotes = snapshot.data.where(_predicate).toList();
-            return Scrollbar(
-              child: ListView(
-                children: quotes
-                    .asMap()
-                    .entries
-                    .map((entry) => Stack(
-                          alignment: Alignment.topRight,
-                          children: <Widget>[
-                            QuoteWidget(entry.value),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('${entry.key + 1}/${quotes.length}'),
-                            )
-                          ],
-                        ))
-                    .toList(),
-                physics: const BouncingScrollPhysics(),
-              ),
-            );
+            if (quotes.isNotEmpty) {
+              return Scrollbar(
+                child: ListView(
+                  children: quotes
+                      .asMap()
+                      .entries
+                      .map((entry) => Stack(
+                            alignment: Alignment.topRight,
+                            children: <Widget>[
+                              QuoteWidget(entry.value),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child:
+                                    Text('${entry.key + 1}/${quotes.length}'),
+                              )
+                            ],
+                          ))
+                      .toList(),
+                  physics: const BouncingScrollPhysics(),
+                ),
+              );
+            } else {
+              return const NoQuoteWidget();
+            }
           } else if (snapshot.hasError) {
             return Text('error: ${snapshot.error}');
           } else {
-            return const CircularProgressIndicator();
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),

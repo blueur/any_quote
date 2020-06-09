@@ -9,16 +9,6 @@ class QuoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (quote == null) {
-      return Center(
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('no quote'),
-          ),
-        ),
-      );
-    }
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -27,7 +17,7 @@ class QuoteWidget extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                '${quote.location}:',
+                quote.location,
                 style: TextStyle(
                   fontSize: 18.0,
                   fontStyle: FontStyle.italic,
@@ -45,13 +35,31 @@ class QuoteWidget extends StatelessWidget {
                 fontSize: 24.0,
               ),
             ),
+            quote.original.isNotEmpty
+                ? Text(
+                    quote.original,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                    ),
+                  )
+                : const SizedBox.shrink(),
             const SizedBox(
               height: 16,
             ),
+            quote.precision.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      quote.precision,
+                      textAlign: TextAlign.left,
+                    ),
+                  )
+                : const SizedBox.shrink(),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                quote.source,
+                quote.reference,
                 textAlign: TextAlign.right,
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
@@ -61,6 +69,17 @@ class QuoteWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class NoQuoteWidget extends StatelessWidget {
+  const NoQuoteWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('no quote'),
     );
   }
 }

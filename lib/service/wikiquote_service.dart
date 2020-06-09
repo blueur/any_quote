@@ -1,22 +1,53 @@
 import 'dart:convert';
-import 'dart:ui';
 
+import 'package:any_quote/model/language.dart';
 import 'package:any_quote/model/wikiquote.dart';
+import 'package:any_quote/utils/enum_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 Future<WikiquoteResponse> parse(
-    Locale locale, Map<String, String> parameters) async {
+    Language language, Map<String, String> parameters) {
   final Map<String, String> parseParameters = {
     'action': 'parse',
     'noimages': '',
   };
   parseParameters.addAll(parameters);
-  return _getWikiquoteResponse(locale, parseParameters);
+  return _getWikiquoteResponse(language, parseParameters);
+}
+
+Stream<SearchResult> querySearch(Language language, String search,
+    {int limit = 8}) {
+  final Map<String, String> queryParameters = {
+    'action': 'query',
+    'list': 'search',
+    'srsearch': search,
+    'srlimit': limit.toString(),
+    'srinfo': '',
+    'srprop': '',
+  };
+  return _getWikiquoteResponse(language, queryParameters)
+      .then((wikiquoteResponse) => wikiquoteResponse.query)
+      .asStream()
+      .expand((query) => query.search);
+}
+
+Stream<SearchResult> queryPrefixSearch(Language language, String search,
+    {int limit = 8}) {
+  final Map<String, String> queryParameters = {
+    'action': 'query',
+    'list': 'prefixsearch',
+    'pssearch': search,
+    'pslimit': limit.toString(),
+  };
+  return _getWikiquoteResponse(language, queryParameters)
+      .then((wikiquoteResponse) => wikiquoteResponse.query)
+      .asStream()
+      .expand((query) => query.prefixsearch);
 }
 
 Future<WikiquoteResponse> _getWikiquoteResponse(
-    Locale locale, Map<String, String> parameters) async {
+    Language language, Map<String, String> parameters) async {
   final Map<String, String> queryParameters = {
     'format': 'json',
     'formatversion': '2',
@@ -24,7 +55,7 @@ Future<WikiquoteResponse> _getWikiquoteResponse(
   };
   queryParameters.addAll(parameters);
   final Uri uri = Uri.https(
-      '${locale.languageCode}.wikiquote.org', '/w/api.php', queryParameters);
+      '${enumToString(language)}.wikiquote.org', '/w/api.php', queryParameters);
   debugPrint('http GET $uri');
   final http.Response response = await http.get(uri);
 

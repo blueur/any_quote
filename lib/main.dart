@@ -8,6 +8,12 @@ void main() {
       brightness: Brightness.light,
       primaryColor: Colors.blue,
       accentColor: Colors.blueAccent,
+      appBarTheme: AppBarTheme(
+        color: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.blue,
+        ),
+      ),
     ),
     home: HomeWidget(),
   ));
@@ -16,4 +22,5 @@ void main() {
 class PreferenceKey {
   static const String QUOTES = 'quotes';
   static const String QUOTE = 'quote';
+  static const String PAGES = 'pages';
 }

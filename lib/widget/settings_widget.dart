@@ -1,3 +1,4 @@
+import 'package:any_quote/widget/pages_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,12 @@ class SettingsWidget extends StatefulWidget {
 
 class _SettingsState extends State<SettingsWidget> {
   final List<_Setting> _settings = [
+    _Setting(
+      icon: Icon(Icons.library_books),
+      title: 'sources',
+      body: PagesWidget(),
+      isExpanded: true,
+    ),
     _Setting(
       icon: Icon(Icons.info),
       title: 'about',
@@ -49,11 +56,11 @@ class _Setting {
   final Icon icon;
   final String title;
   final Widget body;
-  bool isExpanded = false;
+  bool isExpanded;
 
-  _Setting({
-    @required this.icon,
-    @required this.title,
-    @required this.body,
-  });
+  _Setting(
+      {@required this.icon,
+      @required this.title,
+      @required this.body,
+      this.isExpanded = false});
 }
