@@ -82,7 +82,8 @@ class _RandomQuoteWidgetState extends State<RandomQuoteWidget> {
                           );
                         default:
                           if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
+                            print(snapshot.error.toString());
+                            return const NoQuoteWidget();
                           } else {
                             if (snapshot.data != null) {
                               return QuoteWidget(snapshot.data);

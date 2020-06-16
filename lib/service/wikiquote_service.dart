@@ -52,6 +52,7 @@ Future<WikiquoteResponse> _getWikiquoteResponse(
     'format': 'json',
     'formatversion': '2',
     'utf8': '',
+    'origin': '*',
   };
   queryParameters.addAll(parameters);
   final Uri uri = Uri.https(

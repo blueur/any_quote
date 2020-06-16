@@ -6,8 +6,6 @@ import 'package:any_quote/service/wikiquote_service.dart' as wikiquoteService;
 import 'package:any_quote/utils/dom_utils.dart';
 import 'package:any_quote/utils/preferences_utils.dart';
 import 'package:async/async.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,7 +54,7 @@ Stream<Quote> parseQuotes(Language language, Section section, Parse parse) {
       original: original,
       precision: precision,
     );
-    debugPrint(quote.toString());
+//    debugPrint(quote.toString());
     return quote;
   });
   final Stream<Quote> externalQuotes = Stream.fromIterable(parse.links)
