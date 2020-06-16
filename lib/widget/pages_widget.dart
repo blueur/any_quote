@@ -159,7 +159,7 @@ class _WikiSearchState extends State<PageSearchWidget> {
         TextFormField(
           controller: _text_controller,
           decoration: InputDecoration(
-            hintText: 'search',
+            hintText: MaterialLocalizations.of(context).searchFieldLabel,
             contentPadding: const EdgeInsets.all(0.0),
             prefix: DropdownButtonHideUnderline(
               child: DropdownButton<Language>(

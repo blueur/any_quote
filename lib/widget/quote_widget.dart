@@ -1,3 +1,4 @@
+import 'package:any_quote/localizations.dart';
 import 'package:any_quote/model/quote.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,7 @@ class NoQuoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('no quote'),
+      child: Text(AppLocalizations.of(context).noQuote),
     );
   }
 }

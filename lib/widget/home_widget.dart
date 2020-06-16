@@ -1,5 +1,6 @@
+import 'package:any_quote/localizations.dart';
 import 'package:any_quote/widget/library_widget.dart';
-import 'package:any_quote/widget/random_widget.dart';
+import 'package:any_quote/widget/random_quote_widget.dart';
 import 'package:any_quote/widget/settings_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class HomeWidget extends StatefulWidget {
 class _HomeState extends State<HomeWidget> {
   int _selectedIndex = 0;
   static final List<Widget> _widgets = <Widget>[
-    RandomWidget(),
+    RandomQuoteWidget(),
     LibraryWidget(),
     SettingsWidget(),
   ];
@@ -32,18 +33,18 @@ class _HomeState extends State<HomeWidget> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.format_quote),
-            title: Text('quote'),
+            icon: const Icon(Icons.format_quote),
+            title: Text(AppLocalizations.of(context).quote),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            title: Text('library'),
+            icon: const Icon(Icons.library_books),
+            title: Text(AppLocalizations.of(context).library),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('settings'),
+            icon: const Icon(Icons.settings),
+            title: Text(AppLocalizations.of(context).settings),
           ),
         ],
         currentIndex: _selectedIndex,

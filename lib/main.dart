@@ -1,5 +1,7 @@
+import 'package:any_quote/localizations.dart';
 import 'package:any_quote/widget/home_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -15,6 +17,16 @@ void main() {
         ),
       ),
     ),
+    localizationsDelegates: [
+      const AppLocalizationsDelegate(),
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: [
+      const Locale('en'),
+      const Locale('fr'),
+    ],
     home: HomeWidget(),
   ));
 }

@@ -8,14 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 
-class RandomWidget extends StatefulWidget {
-  RandomWidget({Key key}) : super(key: key);
+class RandomQuoteWidget extends StatefulWidget {
+  RandomQuoteWidget({Key key}) : super(key: key);
 
   @override
-  _RandomWidgetState createState() => _RandomWidgetState();
+  _RandomQuoteWidgetState createState() => _RandomQuoteWidgetState();
 }
 
-class _RandomWidgetState extends State<RandomWidget> {
+class _RandomQuoteWidgetState extends State<RandomQuoteWidget> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Future<Quote> _quote;
 

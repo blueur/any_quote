@@ -1,3 +1,4 @@
+import 'package:any_quote/localizations.dart';
 import 'package:any_quote/model/quote.dart';
 import 'package:any_quote/service/quote_service.dart';
 import 'package:any_quote/widget/quote_widget.dart';
@@ -48,7 +49,7 @@ class _LibraryState extends State<LibraryWidget> {
           controller: _text_controller,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.search),
-            hintText: 'search',
+            hintText: MaterialLocalizations.of(context).searchFieldLabel,
             suffixIcon: IconButton(
               icon: const Icon(Icons.clear),
               onPressed: () {
@@ -67,7 +68,7 @@ class _LibraryState extends State<LibraryWidget> {
               });
               return Scaffold.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('updated ${quotes.length} quotes !'),
+                  content: Text(AppLocalizations.of(context).updated),
                 ),
               );
             },
