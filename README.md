@@ -19,6 +19,8 @@ pub run build_runner watch
 
 ```shell
 flutter run --release
+# Android
+flutter build appbundle
 ```
 
 ### Miscellaneous

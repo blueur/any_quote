@@ -10,7 +10,7 @@ class SettingsWidget extends StatefulWidget {
 }
 
 class _SettingsState extends State<SettingsWidget> {
-  static final String _codeUrl = 'https://github.com/blueur/any-quote';
+  static final String _codeUrl = 'https://github.com/blueur/any_quote';
 
   final List<_Setting> _settings = [
     _Setting(
