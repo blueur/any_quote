@@ -64,33 +64,34 @@ class _RandomQuoteWidgetState extends State<RandomQuoteWidget> {
     return Column(
       children: <Widget>[
         Expanded(
-          child: Container(
-            child: Center(
-              child: RefreshIndicator(
-                onRefresh: _refreshQuote,
-                child: Scrollbar(
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: FutureBuilder<Quote>(
-                      future: _quote,
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          default:
-                            if (snapshot.hasError) {
-                              return Text("${snapshot.error}");
+          child: Center(
+            child: RefreshIndicator(
+              onRefresh: _refreshQuote,
+              child: Scrollbar(
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: FutureBuilder<Quote>(
+                    initialData: null,
+                    future: _quote,
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return Padding(
+                            padding: EdgeInsets.all(2.0),
+                            child: CircularProgressIndicator(),
+                          );
+                        default:
+                          if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          } else {
+                            if (snapshot.data != null) {
+                              return QuoteWidget(snapshot.data);
                             } else {
-                              if (snapshot.data != null) {
-                                return QuoteWidget(snapshot.data);
-                              } else {
-                                return const NoQuoteWidget();
-                              }
+                              return const NoQuoteWidget();
                             }
-                        }
-                      },
-                    ),
+                          }
+                      }
+                    },
                   ),
                 ),
               ),

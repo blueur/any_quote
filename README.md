@@ -1,6 +1,6 @@
 # any_quote
 
-Application for getting quotes from [Wikiquote](https://www.wikiquote.org/). 
+A Flutter application for getting quotes from [Wikiquote](https://www.wikiquote.org/). 
 
 ## Build
 
@@ -19,4 +19,11 @@ pub run build_runner watch
 
 ```shell
 flutter run --release
+```
+
+### Miscellaneous
+
+```shell
+# generate icons
+flutter pub run flutter_launcher_icons:main
 ```
