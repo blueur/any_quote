@@ -2,6 +2,8 @@
 
 A Flutter application for getting quotes from [Wikiquote](https://www.wikiquote.org/). 
 
+[Powered by Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access#Best_practices_to_follow)
+
 ## Build
 
 ### build_runner
@@ -21,6 +23,8 @@ pub run build_runner watch
 flutter run --release
 # Android
 flutter build appbundle
+# Web
+flutter build web
 ```
 
 ### Miscellaneous
@@ -28,4 +32,11 @@ flutter build appbundle
 ```shell
 # generate icons
 flutter pub run flutter_launcher_icons:main
+```
+
+## Deploy
+
+```shell
+# Firebase
+firebase deploy
 ```
