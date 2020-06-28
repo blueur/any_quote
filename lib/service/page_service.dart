@@ -5,20 +5,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 
-List<Page> _defaultPages = [
-  Page(
+List<WikiPage> _defaultPages = [
+  WikiPage(
     title: 'Kaamelott',
     language: Language.fr,
     enabled: true,
   )
 ];
 
-List<Page> readPages(SharedPreferences prefs) {
+List<WikiPage> readPages(SharedPreferences prefs) {
   return readList(
-      prefs, PreferenceKey.PAGES, (string) => Page.fromString(string),
+      prefs, PreferenceKey.PAGES, (string) => WikiPage.fromString(string),
       defaultValue: _defaultPages);
 }
 
-Future<bool> savePages(SharedPreferences prefs, List<Page> pages) {
+Future<bool> savePages(SharedPreferences prefs, List<WikiPage> pages) {
   return saveList(prefs, PreferenceKey.PAGES, pages);
 }

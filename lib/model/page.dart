@@ -6,19 +6,20 @@ import 'package:json_annotation/json_annotation.dart';
 part 'page.g.dart';
 
 @JsonSerializable()
-class Page implements Comparable {
+class WikiPage implements Comparable {
   final String title;
   final Language language;
   bool enabled;
 
-  Page({this.title, this.language, this.enabled});
+  WikiPage({this.title, this.language, this.enabled});
 
-  factory Page.fromJson(Map<String, dynamic> json) => _$PageFromJson(json);
+  factory WikiPage.fromJson(Map<String, dynamic> json) =>
+      _$WikiPageFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PageToJson(this);
+  Map<String, dynamic> toJson() => _$WikiPageToJson(this);
 
-  factory Page.fromString(String string) =>
-      string != null ? Page.fromJson(json.decode(string)) : null;
+  factory WikiPage.fromString(String string) =>
+      string != null ? WikiPage.fromJson(json.decode(string)) : null;
 
   @override
   String toString() {

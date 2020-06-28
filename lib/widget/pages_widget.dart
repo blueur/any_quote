@@ -14,12 +14,12 @@ class PagesWidget extends StatefulWidget {
 
 class _PagesState extends State<PagesWidget> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Future<List<Page>> _pages;
+  Future<List<WikiPage>> _pages;
 
-  void _onAdd(Page newPage) {
+  void _onAdd(WikiPage newPage) {
     setState(() {
       _pages = _prefs.then((prefs) {
-        final List<Page> pages = readPages(prefs);
+        final List<WikiPage> pages = readPages(prefs);
         if (!pages.any((page) => page.toString() == newPage.toString())) {
           pages.add(newPage);
           pages.sort();
@@ -30,7 +30,7 @@ class _PagesState extends State<PagesWidget> {
     });
   }
 
-  void _onEnable(List<Page> pages, int index, bool enabled) {
+  void _onEnable(List<WikiPage> pages, int index, bool enabled) {
     setState(() {
       _pages = _prefs.then((prefs) {
         pages[index].enabled = enabled;
@@ -40,7 +40,7 @@ class _PagesState extends State<PagesWidget> {
     });
   }
 
-  void _onDelete(List<Page> pages, int index) {
+  void _onDelete(List<WikiPage> pages, int index) {
     setState(() {
       _pages = _prefs.then((prefs) {
         pages.removeAt(index);
@@ -63,7 +63,7 @@ class _PagesState extends State<PagesWidget> {
         PageSearchWidget(
           onSearch: _onAdd,
         ),
-        FutureBuilder<List<Page>>(
+        FutureBuilder<List<WikiPage>>(
           future: _pages,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -99,7 +99,7 @@ class _PagesState extends State<PagesWidget> {
 }
 
 class PageSearchWidget extends StatefulWidget {
-  final Function(Page) onSearch;
+  final Function(WikiPage) onSearch;
 
   const PageSearchWidget({Key key, @required this.onSearch}) : super(key: key);
 
@@ -109,11 +109,11 @@ class PageSearchWidget extends StatefulWidget {
 
 class _WikiSearchState extends State<PageSearchWidget> {
   final TextEditingController _text_controller = TextEditingController();
-  final Function(Page) onSearch;
+  final Function(WikiPage) onSearch;
 
   Language _language;
   String _text;
-  Future<List<Page>> _pages;
+  Future<List<WikiPage>> _pages;
 
   _WikiSearchState({@required this.onSearch});
 
@@ -126,7 +126,7 @@ class _WikiSearchState extends State<PageSearchWidget> {
       } else {
         _pages = wikiquoteService
             .queryPrefixSearch(language, text)
-            .map((search) => Page(
+            .map((search) => WikiPage(
                   title: search.title,
                   language: language,
                   enabled: true,
@@ -184,7 +184,7 @@ class _WikiSearchState extends State<PageSearchWidget> {
             ),
           ),
         ),
-        FutureBuilder<List<Page>>(
+        FutureBuilder<List<WikiPage>>(
           future: _pages,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
