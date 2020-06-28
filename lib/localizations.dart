@@ -16,7 +16,7 @@ class AppLocalizations {
     'en': {
       'about': 'About',
       'library': 'Library',
-      'noQuote': 'No quote',
+      'noQuote': 'No available quotes. Please check the settings.',
       'quote': 'Quote',
       'settings': 'Settings',
       'sources': 'Sources',
@@ -25,7 +25,8 @@ class AppLocalizations {
     'fr': {
       'about': 'A propos',
       'library': 'Bibliothèque',
-      'noQuote': 'Pas de citation',
+      'noQuote':
+          'Pas de citations disponible. Veuillez vérifier les paramètres.',
       'quote': 'Citation',
       'settings': 'Paramètres',
       'sources': 'Sources',

@@ -9,8 +9,13 @@ List<WikiPage> _defaultPages = [
   WikiPage(
     title: 'Kaamelott',
     language: Language.fr,
-    enabled: true,
-  )
+    enabled: false,
+  ),
+  WikiPage(
+    title: 'Astérix & Obélix : Mission Cléopâtre',
+    language: Language.fr,
+    enabled: false,
+  ),
 ];
 
 List<WikiPage> readPages(SharedPreferences prefs) {

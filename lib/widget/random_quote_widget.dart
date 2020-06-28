@@ -1,5 +1,4 @@
 import 'package:any_quote/model/quote.dart';
-import 'package:any_quote/service/quote_service.dart';
 import 'package:any_quote/service/random_service.dart';
 import 'package:any_quote/widget/quote_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +22,7 @@ class _RandomQuoteWidgetState extends State<RandomQuoteWidget> {
     final SharedPreferences prefs = await _prefs;
     setState(() {
       _quote = prefs
-          .setString(PreferenceKey.QUOTE, quote.toString())
+          .setString(PreferenceKey.QUOTE, quote?.toString())
           .then((success) => quote);
     });
     return quote;
@@ -40,8 +39,7 @@ class _RandomQuoteWidgetState extends State<RandomQuoteWidget> {
     if (quoteStrings != null) {
       return Quote.fromString(randomInstance(quoteStrings));
     } else {
-      final List<Quote> quotes = await updateQuotes(prefs);
-      return randomInstance(quotes);
+      return null;
     }
   }
 
