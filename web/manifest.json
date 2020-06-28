@@ -1,11 +1,11 @@
 {
-    "name": "any_quote",
-    "short_name": "any_quote",
+    "name": "Any Quote",
+    "short_name": "Any Quote",
     "start_url": ".",
     "display": "minimal-ui",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A Flutter application for getting quotes from Wikiquote.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
