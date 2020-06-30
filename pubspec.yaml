@@ -1,5 +1,5 @@
 name: any_quote
-version: 0.1.0
+version: 0.1.1+2
 description: A Flutter application for getting quotes from Wikiquote.
 repository: https://github.com/blueur/any_quote
 publish_to: none
