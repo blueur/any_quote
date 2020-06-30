@@ -1,8 +1,6 @@
-import 'package:any_quote/localizations.dart';
 import 'package:any_quote/model/quote.dart';
 import 'package:any_quote/service/quote_service.dart';
 import 'package:any_quote/widget/quote_widget.dart';
-import 'package:any_quote/widget/update_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,21 +57,6 @@ class _LibraryState extends State<LibraryWidget> {
             ),
           ),
         ),
-        actions: <Widget>[
-          UpdateButton<List<Quote>>(
-            update: () async => await updateQuotes(await _prefs),
-            onFinish: (context, quotes) {
-              setState(() {
-                _quotes = _prefs.then(readQuotes);
-              });
-              return Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context).updated),
-                ),
-              );
-            },
-          )
-        ],
       ),
       body: FutureBuilder<List<Quote>>(
         future: _quotes,

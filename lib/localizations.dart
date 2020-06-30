@@ -15,38 +15,50 @@ class AppLocalizations {
   static Map<String, Map<String, String>> _localizedValues = {
     'en': {
       'about': 'About',
+      'addPage': 'Add a new page',
       'library': 'Library',
       'noQuote': 'No available quotes. Please check the settings.',
+      'pages': 'Pages',
       'quote': 'Quote',
       'settings': 'Settings',
-      'sources': 'Sources',
-      'updated': 'Update finished',
+      'update': 'Update',
+      'updated': 'Updated',
+      'updating': 'Updating',
     },
     'fr': {
       'about': 'A propos',
+      'addPage': 'Ajouter une nouvelle page',
       'library': 'Bibliothèque',
       'noQuote':
           'Pas de citations disponible. Veuillez vérifier les paramètres.',
+      'pages': 'Pages',
       'quote': 'Citation',
       'settings': 'Paramètres',
-      'sources': 'Sources',
+      'update': 'Mettre à jour',
       'updated': 'Mise à jour terminée',
+      'updating': 'Mise à jour en cours',
     },
   };
 
   String get about => _localizedValues[locale.languageCode]['about'];
 
+  String get addPage => _localizedValues[locale.languageCode]['addPage'];
+
   String get library => _localizedValues[locale.languageCode]['library'];
 
   String get noQuote => _localizedValues[locale.languageCode]['noQuote'];
+
+  String get pages => _localizedValues[locale.languageCode]['pages'];
 
   String get quote => _localizedValues[locale.languageCode]['quote'];
 
   String get settings => _localizedValues[locale.languageCode]['settings'];
 
-  String get sources => _localizedValues[locale.languageCode]['sources'];
+  String get update => _localizedValues[locale.languageCode]['update'];
 
   String get updated => _localizedValues[locale.languageCode]['updated'];
+
+  String get updating => _localizedValues[locale.languageCode]['updating'];
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

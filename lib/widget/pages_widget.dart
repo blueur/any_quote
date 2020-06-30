@@ -1,6 +1,11 @@
+import 'dart:async';
+
+import 'package:any_quote/localizations.dart';
 import 'package:any_quote/model/language.dart';
 import 'package:any_quote/model/page.dart';
+import 'package:any_quote/model/quote.dart';
 import 'package:any_quote/service/page_service.dart';
+import 'package:any_quote/service/quote_service.dart';
 import 'package:any_quote/service/wikiquote_service.dart' as wikiquoteService;
 import 'package:any_quote/utils/enum_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,6 +55,44 @@ class _PagesState extends State<PagesWidget> {
     });
   }
 
+  Future<void> _onUpdate(BuildContext buildContext) async {
+    final Future<List<Quote>> quotes =
+        _prefs.then((prefs) => updateQuotes(prefs));
+    return showDialog(
+      context: buildContext,
+      barrierDismissible: false,
+      builder: (context) {
+        final StreamSubscription<List<Quote>> subscription =
+            quotes.asStream().listen((quotes) {
+          Navigator.of(context).pop();
+          Scaffold.of(buildContext).showSnackBar(
+            SnackBar(
+              content: Text(
+                  '${AppLocalizations.of(buildContext).updated} : ${quotes.length}'),
+            ),
+          );
+        });
+        return WillPopScope(
+          onWillPop: () => subscription.cancel().then((value) => true),
+          child: AlertDialog(
+            title: Text(AppLocalizations.of(context).updating),
+            content: LinearProgressIndicator(),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  subscription.cancel();
+                  Navigator.of(context).pop();
+                },
+                child:
+                    Text(MaterialLocalizations.of(context).cancelButtonLabel),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -74,6 +117,8 @@ class _PagesState extends State<PagesWidget> {
                     title: Text(entry.value.title),
                     subtitle: Text(enumToString(entry.value.language)),
                     dense: true,
+                    onTap: () => _onEnable(
+                        snapshot.data, entry.key, !entry.value.enabled),
                     leading: Checkbox(
                       value: entry.value.enabled,
                       onChanged: (value) =>
@@ -92,6 +137,12 @@ class _PagesState extends State<PagesWidget> {
               );
             }
           },
+        ),
+        RaisedButton(
+          textColor: Colors.white,
+          color: Theme.of(context).primaryColor,
+          onPressed: () => _onUpdate(context),
+          child: Text(AppLocalizations.of(context).update),
         )
       ],
     );
@@ -159,7 +210,7 @@ class _WikiSearchState extends State<PageSearchWidget> {
         TextFormField(
           controller: _text_controller,
           decoration: InputDecoration(
-            hintText: MaterialLocalizations.of(context).searchFieldLabel,
+            hintText: AppLocalizations.of(context).addPage,
             contentPadding: const EdgeInsets.all(0.0),
             prefix: DropdownButtonHideUnderline(
               child: DropdownButton<Language>(

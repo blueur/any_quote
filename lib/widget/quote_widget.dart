@@ -17,7 +17,7 @@ class QuoteWidget extends StatelessWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
+              child: SelectableText(
                 quote.location,
                 style: TextStyle(
                   fontSize: 18.0,
@@ -29,7 +29,7 @@ class QuoteWidget extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            Text(
+            SelectableText(
               quote.text,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -37,7 +37,7 @@ class QuoteWidget extends StatelessWidget {
               ),
             ),
             quote.original.isNotEmpty
-                ? Text(
+                ? SelectableText(
                     quote.original,
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -51,7 +51,7 @@ class QuoteWidget extends StatelessWidget {
             quote.precision.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
+                    child: SelectableText(
                       quote.precision,
                       textAlign: TextAlign.left,
                     ),
@@ -59,7 +59,7 @@ class QuoteWidget extends StatelessWidget {
                 : const SizedBox.shrink(),
             Align(
               alignment: Alignment.centerRight,
-              child: Text(
+              child: SelectableText(
                 quote.reference,
                 textAlign: TextAlign.right,
                 style: TextStyle(

@@ -27,7 +27,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - images/
+    - images/Wikidata_stamp.png
 
 flutter_icons:
   android: true

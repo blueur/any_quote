@@ -15,7 +15,7 @@ class _SettingsState extends State<SettingsWidget> {
   final List<_Setting> _settings = [
     _Setting(
       icon: const Icon(Icons.library_books),
-      getTitle: (context) => AppLocalizations.of(context).sources,
+      getTitle: (context) => AppLocalizations.of(context).pages,
       body: PagesWidget(),
       isExpanded: true,
     ),
